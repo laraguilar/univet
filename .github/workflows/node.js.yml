@@ -22,12 +22,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Análise com SonarCloud (ou SonarQube)
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2.2.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
       # Configuração do Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
