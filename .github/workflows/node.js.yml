@@ -1,6 +1,3 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Node.js CI
 
 on:
@@ -17,38 +14,37 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      # Checkout do repositorio
+      # Checkout do repositório
       - name: Checkout code
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-          
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
+          fetch-depth: 0
+
+      # Análise com SonarCloud (ou SonarQube)
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2.2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       # Configuração do Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Substitua pela versão Node.js do projeto
+          node-version: ${{ matrix.node-version }}
 
       # Instalação de dependências
       - name: Install dependencies
-        run: yarn # ou 'yarn install' se estiver usando Yarn
+        run: yarn install
 
       # Build do front-end
       - name: Build application
-        run: yarn build # ou 'yarn build'
+        run: yarn build
 
-      # Validação do build (verifica se a pasta 'build' foi gerada)
+      # Validação do build
       - name: Validate build output
-        run: test -d .next # ou substitua 'build' pelo diretório de saída do seu projeto
+        run: test -d .next # Altere conforme o diretório gerado pelo build do seu projeto
 
       # Limpeza (opcional)
       - name: Clean up
