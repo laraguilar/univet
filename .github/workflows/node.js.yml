@@ -40,7 +40,7 @@ jobs:
 
       # Validação do build (verifica se a pasta 'build' foi gerada)
       - name: Validate build output
-        run: test -d ./next # ou substitua 'build' pelo diretório de saída do seu projeto
+        run: test -d .next # ou substitua 'build' pelo diretório de saída do seu projeto
 
       # Limpeza (opcional)
       - name: Clean up
